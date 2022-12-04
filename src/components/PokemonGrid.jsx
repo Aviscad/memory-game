@@ -1,4 +1,5 @@
 import PokemonCard from "./PokemonCard";
+import Modal from "./Modal";
 import {useState, useEffect} from "react";
 
 const getRandomInt = (min = 1, max = 152) => {
@@ -11,7 +12,7 @@ const getRandomInt = (min = 1, max = 152) => {
 const getRandomArray = () => {
 	let pokemonIds = new Set();
 
-	for (let i = 0; i < 27; i++) {
+	for (let i = 0; i < 3; i++) {
 		let n = getRandomInt();
 
 		while (pokemonIds.has(n)) {
@@ -42,10 +43,14 @@ function PokemonGrid() {
 			setPokemonClicked([...pokemonClicked]);
 			shuffleArray(pokemonList);
 		} else {
-			setMessage("Already Clicked, you lose!");
+			setMessage("You already clicked this pokemon, you lose!");
 			setGameOver(true);
 		}
-		console.log(pokemonClicked);
+
+		if (pokemonList.length === pokemonClicked.length) {
+			setMessage("Congratulations, You Won!");
+			setGameOver(true);
+		}
 	};
 
 	const resetGame = () => {
@@ -71,18 +76,6 @@ function PokemonGrid() {
 				<p className="font-bold">
 					Pokemon left: {pokemonList.length - pokemonClicked.length}
 				</p>
-				<p>{pokemonClicked.length === pokemonList.length ? "Won" : ""}</p>
-				<button
-					className={
-						!gameOver
-							? "hidden"
-							: "inline-block bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-5 border border-blue-500 hover:border-transparent rounded"
-					}
-					onClick={resetGame}
-				>
-					Reset
-				</button>
-				<p>{message}</p>
 			</div>
 			<div className="flex flex-wrap flex-auto gap-3 p-3 justify-center">
 				{pokemonList.map(pokemonNumber => (
@@ -93,6 +86,14 @@ function PokemonGrid() {
 					/>
 				))}
 			</div>
+			{gameOver ? (
+				<Modal
+					message={message}
+					handleResetClick={resetGame}
+				/>
+			) : (
+				""
+			)}
 		</div>
 	);
 }
