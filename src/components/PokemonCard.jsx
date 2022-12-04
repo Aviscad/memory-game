@@ -13,7 +13,6 @@ function PokemonCard({number, handlePokemonClick}) {
 				.then(response => response.json())
 				.then(data => {
 					setPokemonInfo(data);
-					console.log(pokemonInfo);
 				})
 				.catch(error => {
 					console.log(error);
@@ -29,7 +28,7 @@ function PokemonCard({number, handlePokemonClick}) {
 
 	return (
 		<figure
-			className="shadow-md cursor-pointer p-1 hover:shadow-2xl"
+			className="shadow-md cursor-pointer p-1 hover:shadow-2xl flex flex-col justify-center items-center max-w-20"
 			onClick={() => {
 				if (handlePokemonClick != null) {
 					handlePokemonClick(number);
@@ -37,11 +36,11 @@ function PokemonCard({number, handlePokemonClick}) {
 			}}
 		>
 			<img
-				className="w-36 h-36"
+				className="w-10 h-10 sm:w-16 sm:h-16 md:w-28 md:h-28 xl:w-36 xl:h-36"
 				src={pokemonInfo?.sprites?.other?.dream_world?.front_default}
 				alt=""
 			/>
-			<figcaption className="text-center capitalize">
+			<figcaption className="text-center capitalize text-sm sm:text-base xl:text-lg">
 				{pokemonInfo.name}
 			</figcaption>
 		</figure>
