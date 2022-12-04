@@ -1,4 +1,3 @@
-import "./App.css";
 import PokemonCard from "./components/PokemonCard";
 import {useState, useEffect} from "react";
 
@@ -8,14 +7,14 @@ const getRandomInt = (min = 1, max = 152) => {
 	return Math.floor(Math.random() * (max - min) + min);
 };
 
+//Get pokemon numbers
 const getRandomArray = () => {
 	let pokemonIds = new Set();
 
-	for (let i = 0; i < 6; i++) {
+	for (let i = 0; i < 20; i++) {
 		let n = getRandomInt();
 
 		while (pokemonIds.has(n)) {
-			console.log("repeated: " + n);
 			n = getRandomInt();
 		}
 		pokemonIds.add(n);
@@ -33,17 +32,26 @@ const shuffleArray = array => {
 function App() {
 	const [pokemonList, setPokemonList] = useState([]);
 	const [pokemonClicked, setPokemonClicked] = useState([]);
+	const [message, setMessage] = useState("");
+	const [gameOver, setGameOver] = useState(false);
 
 	const handlePokemonClicked = pokemonId => {
 		if (pokemonClicked.indexOf(pokemonId) === -1) {
+			setMessage("");
 			pokemonClicked.push(pokemonId);
 			setPokemonClicked([...pokemonClicked]);
 			shuffleArray(pokemonList);
 		} else {
-			setPokemonClicked([]);
-			console.log("Already Clicked!");
+			setMessage("Already Clicked!");
+			setGameOver(true);
 		}
 		console.log(pokemonClicked);
+	};
+
+	const resetGame = () => {
+		setGameOver(false);
+		setPokemonClicked([]);
+		setPokemonList([...getRandomArray()]);
 	};
 
 	useEffect(() => {
@@ -57,17 +65,30 @@ function App() {
 	}, []);
 
 	return (
-		<div className="App">
-			<div className="container flex gap-3 p-3">
+		<div className="select-none">
+			<div className="container flex flex-wrap gap-3 p-3 justify-center">
 				{pokemonList.map(pokemonNumber => (
 					<PokemonCard
 						number={pokemonNumber}
 						key={pokemonNumber}
-						handlePokemonClick={handlePokemonClicked}
+						handlePokemonClick={!gameOver ? handlePokemonClicked : null}
 					/>
 				))}
+			</div>
+			<div className="container flex flex-wrap gap-3 p-3 justify-center">
 				<p>Clicks: {pokemonClicked.length}</p>
+				<p>{message}</p>
 				<p>{pokemonClicked.length === pokemonList.length ? "Won" : ""}</p>
+				<button
+					className={
+						!gameOver
+							? "invisible"
+							: "visible bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-5 border border-blue-500 hover:border-transparent rounded"
+					}
+					onClick={resetGame}
+				>
+					Reset
+				</button>
 			</div>
 		</div>
 	);
