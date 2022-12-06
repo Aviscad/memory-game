@@ -56,16 +56,16 @@ function PokemonGrid() {
     let listSize;
     switch (difficulty) {
       case "EASY":
-        listSize = 9;
+        listSize = 10;
         break;
       case "MEDIUM":
-        listSize = 18;
+        listSize = 20;
         break;
       case "HARD":
-        listSize = 27;
+        listSize = 30;
         break;
       case "EXTREME":
-        listSize = 36;
+        listSize = 40;
         break;
       default:
         listSize = 0;
