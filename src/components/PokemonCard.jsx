@@ -13,6 +13,7 @@ function PokemonCard({ number, handlePokemonClick }) {
         .then((response) => response.json())
         .then((data) => {
           setPokemonInfo(data);
+          console.log(data);
         })
         .catch((error) => {
           console.log(error);
@@ -37,7 +38,11 @@ function PokemonCard({ number, handlePokemonClick }) {
     >
       <img
         className="w-10 h-10 sm:w-16 sm:h-16 md:w-28 md:h-28 xl:w-36 xl:h-36"
-        src={pokemonInfo?.sprites?.other?.dream_world?.front_default}
+        src={
+          pokemonInfo?.sprites?.other?.dream_world?.front_default ||
+          pokemonInfo?.sprites?.other?.home?.front_default ||
+          pokemonInfo?.sprites?.other?.["official-artwork"]?.front_default
+        }
         alt=""
       />
       <figcaption className="text-center capitalize text-sm sm:text-base xl:text-lg">
