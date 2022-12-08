@@ -1,6 +1,6 @@
 function Modal({ message, handleResetClick }) {
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 w-screen h-screen bg-black bg-opacity-50 flex justify-center items-center">
+    <div className="fixed top-0 left-0 right-0 z-50 w-screen h-screen bg-black bg-opacity-60 flex justify-center items-center">
       <div className="h-auto max-w-md md:h-auto ">
         <div className="bg-white rounded-lg shadow px-10 py-2">
           <div className="p-4 text-center">
