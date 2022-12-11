@@ -2,7 +2,7 @@ import PokemonCard from "./PokemonCard";
 import Header from "./Header";
 import Footer from "./Footer";
 import Modal from "./Modal";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -103,7 +103,6 @@ function PokemonGrid() {
   const [selectedDifficulty, setselectedDifficulty] = useState("EASY");
   const [generationList, setgenerationList] = useState([]);
   const [selectedGeneration, setSelectedGeneration] = useState("i");
-  const pokeList = useRef(null);
 
   const handlePokemonClicked = (pokemonId) => {
     if (pokemonClicked.indexOf(pokemonId) === -1) {
@@ -120,7 +119,6 @@ function PokemonGrid() {
       setMessage("Congratulations, You Won!");
       setGameOver(true);
     }
-    pokeList.current.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const resetGame = () => {
@@ -131,7 +129,6 @@ function PokemonGrid() {
     setMessage("");
     setPokemonClicked([]);
     setPokemonList([...getRandomArray(selectedDifficulty, selectedGeneration)]);
-    window.scrollTo(0, 0);
   };
 
   const handleChangeDifficulty = (e) => {
@@ -182,17 +179,16 @@ function PokemonGrid() {
         handleDifficulty={handleChangeDifficulty}
       />
       {/* POKEMON LIST */}
-      <main
-        ref={pokeList}
-        className="flex flex-wrap gap-3 py-1 sm:py-10 md:py-0 min-h-screen justify-center items-center"
-      >
-        {pokemonList.map((pokemonNumber) => (
-          <PokemonCard
-            number={pokemonNumber}
-            key={pokemonNumber}
-            handlePokemonClick={!gameOver ? handlePokemonClicked : null}
-          />
-        ))}
+      <main className="min-h-screen lg:flex lg:justify-center lg:items-center">
+        <div className="grid grid-cols-5 p-3 sm:grid-cols-8 lg:grid-cols-10 gap-3">
+          {pokemonList.map((pokemonNumber) => (
+            <PokemonCard
+              number={pokemonNumber}
+              key={pokemonNumber}
+              handlePokemonClick={!gameOver ? handlePokemonClicked : null}
+            />
+          ))}
+        </div>
       </main>
       {gameOver ? <Modal message={message} handleResetClick={resetGame} /> : ""}
       <Footer />
