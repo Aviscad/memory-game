@@ -28,7 +28,7 @@ function PokemonCard({ number, handlePokemonClick }) {
 
   return (
     <figure
-      className="shadow-md cursor-pointer p-1 hover:shadow-2xl flex flex-col justify-center items-center max-w-20"
+      className="shadow-md cursor-pointer rounded-md bg-white p-1 flex flex-col justify-center items-center max-w-20 max-h-40 hover:shadow hover:shadow-black hover:scale-105"
       onClick={() => {
         if (handlePokemonClick != null) {
           handlePokemonClick(number);
@@ -44,7 +44,8 @@ function PokemonCard({ number, handlePokemonClick }) {
         }
       />
       <figcaption className="text-center capitalize text-sm sm:text-base xl:text-lg">
-        {pokemonInfo.name}
+        {"#"}
+        {pokemonInfo.id ?? ""}
       </figcaption>
     </figure>
   );

@@ -1,9 +1,8 @@
 import PokemonCard from "./PokemonCard";
-import Select from "./Select";
+import Header from "./Header";
+import Footer from "./Footer";
 import Modal from "./Modal";
 import { useState, useEffect, useRef } from "react";
-
-const difficultyOptions = ["Easy", "Medium", "Hard", "Extreme"];
 
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -121,6 +120,7 @@ function PokemonGrid() {
       setMessage("Congratulations, You Won!");
       setGameOver(true);
     }
+    pokeList.current.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const resetGame = () => {
@@ -131,6 +131,7 @@ function PokemonGrid() {
     setMessage("");
     setPokemonClicked([]);
     setPokemonList([...getRandomArray(selectedDifficulty, selectedGeneration)]);
+    window.scrollTo(0, 0);
   };
 
   const handleChangeDifficulty = (e) => {
@@ -163,7 +164,6 @@ function PokemonGrid() {
         });
     };
     fetchGenerations();
-    pokeList.current.scrollIntoView({ behavior: "smooth", block: "start" });
 
     return () => {
       abortController.abort();
@@ -171,33 +171,21 @@ function PokemonGrid() {
   }, [selectedGeneration, selectedDifficulty, highScore]);
 
   return (
-    <div className="select-none">
+    <div className="select-none bg-gray-400">
       {/* GRID HEADER */}
-      <div className="flex flex-col gap-3 p-3 justify-center items-center sm:flex-row sm:justify-around">
-        <div>
-          <p className="font-bold">Captured: {pokemonClicked.length}</p>
-          <p className="font-bold">
-            Left: {pokemonList.length - pokemonClicked.length}
-          </p>
-          <p className="font-bold">Highscore: {highScore}</p>
-        </div>
-
-        <div className="flex flex-col justify-center items-center gap-1 sm:flex-row">
-          <Select
-            label="Difficulty: "
-            options={difficultyOptions}
-            handleChange={handleChangeDifficulty}
-          />
-          <Select
-            label="Generations: "
-            options={generationList}
-            handleChange={handleChangeGeneration}
-          />
-        </div>
-      </div>
-      <hr ref={pokeList} />
+      <Header
+        highScore={highScore}
+        pokemonClicked={pokemonClicked.length}
+        pokemonList={pokemonList.length}
+        generationList={generationList}
+        handleGeneration={handleChangeGeneration}
+        handleDifficulty={handleChangeDifficulty}
+      />
       {/* POKEMON LIST */}
-      <div className="flex flex-wrap flex-auto gap-3 p-3 justify-center">
+      <main
+        ref={pokeList}
+        className="flex flex-wrap gap-3 py-1 sm:py-10 md:py-0 min-h-screen justify-center items-center"
+      >
         {pokemonList.map((pokemonNumber) => (
           <PokemonCard
             number={pokemonNumber}
@@ -205,8 +193,9 @@ function PokemonGrid() {
             handlePokemonClick={!gameOver ? handlePokemonClicked : null}
           />
         ))}
-      </div>
+      </main>
       {gameOver ? <Modal message={message} handleResetClick={resetGame} /> : ""}
+      <Footer />
     </div>
   );
 }
