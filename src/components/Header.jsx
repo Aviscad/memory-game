@@ -18,7 +18,7 @@ const transformTime = (timeInSeconds) => {
     sec = "00";
   }
 
-  return `${min} : ${sec} `;
+  return `${min} : ${sec} ${min < 1 ? " s" : " m"}`;
 };
 
 const Header = ({
@@ -54,6 +54,7 @@ const Header = ({
       clearInterval(myTimer);
     };
   }, [t]);
+
   return (
     <header className="flex flex-col gap-3 p-3 justify-center items-center  sm:flex-row sm:justify-around bg-gray-800 text-white">
       <div className="flex justify-center items-center flex-col sm:flex-row sm:gap-5">
@@ -76,8 +77,8 @@ const Header = ({
           handleChange={handleGeneration}
         />
       </div>
-      <p className="fixed top-0 left-0 p-3 bg-gray-800 z-10">
-        <span className="text-red-400 animate-pulse font-bold">
+      <p className="fixed top-1.5 left-1.5 py-3 px-5 bg-gray-800 z-10 rounded-3xl text-xs">
+        <span className="text-red-500 animate-pulse font-bold">
           {transformTime(t)}
         </span>
       </p>
