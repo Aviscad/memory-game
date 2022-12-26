@@ -44,8 +44,10 @@ function PokemonCard({ number, handlePokemonClick }) {
         }
       />
       <figcaption className="text-center capitalize text-sm sm:text-base xl:text-lg">
-        {"#"}
-        {pokemonInfo.id ?? ""}
+        <small>
+          {" "}
+          <i>{pokemonInfo.name}</i>
+        </small>
       </figcaption>
     </figure>
   );

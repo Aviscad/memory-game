@@ -59,6 +59,9 @@ const checkDifficulty = (difficulty) => {
     case "EXTREME":
       listSize = 40;
       break;
+    case "HARD DEMON":
+      listSize = 50;
+      break;
     default:
       listSize = 0;
       break;
@@ -95,14 +98,20 @@ const shuffleArray = (array) => {
 };
 
 function PokemonGrid() {
-  const [pokemonList, setPokemonList] = useState([]);
   const [pokemonClicked, setPokemonClicked] = useState([]);
-  const [highScore, sethighScore] = useState(0);
+  const [highScore, sethighScore] = useState(
+    localStorage.getItem("score") === null
+      ? 0
+      : parseInt(localStorage.getItem("score"))
+  );
   const [message, setMessage] = useState("");
   const [gameOver, setGameOver] = useState(false);
   const [selectedDifficulty, setselectedDifficulty] = useState("EASY");
   const [generationList, setgenerationList] = useState([]);
   const [selectedGeneration, setSelectedGeneration] = useState("i");
+  const [pokemonList, setPokemonList] = useState([]);
+  const [timerReset, settimerReset] = useState(true);
+  const [difficultyTime, setDifficultyTime] = useState(420);
 
   const handlePokemonClicked = (pokemonId) => {
     if (pokemonClicked.indexOf(pokemonId) === -1) {
@@ -119,16 +128,28 @@ function PokemonGrid() {
       setMessage("Congratulations, You Won!");
       setGameOver(true);
     }
+
+    settimerReset(false);
+  };
+
+  const handleGameState = (value) => {
+    setMessage("Your time is over, you lose!");
+    setGameOver(value);
   };
 
   const resetGame = () => {
+    console.log(checkDifficulty);
     sethighScore(
-      highScore <= pokemonClicked.length ? pokemonClicked.length : highScore
+      highScore <= pokemonClicked.length
+        ? pokemonClicked.length
+        : parseInt(localStorage.getItem("score"))
     );
+    localStorage.setItem("score", JSON.stringify(highScore));
     setGameOver(false);
     setMessage("");
     setPokemonClicked([]);
     setPokemonList([...getRandomArray(selectedDifficulty, selectedGeneration)]);
+    settimerReset(true);
   };
 
   const handleChangeDifficulty = (e) => {
@@ -144,6 +165,19 @@ function PokemonGrid() {
 
   useEffect(() => {
     setPokemonList([...getRandomArray(selectedDifficulty, selectedGeneration)]);
+
+    if (checkDifficulty(selectedDifficulty) === 10) {
+      setDifficultyTime(240);
+    } else if (checkDifficulty(selectedDifficulty) === 20) {
+      setDifficultyTime(210);
+    } else if (checkDifficulty(selectedDifficulty) === 30) {
+      setDifficultyTime(180);
+    } else if (checkDifficulty(selectedDifficulty) === 40) {
+      setDifficultyTime(150);
+    } else if (checkDifficulty(selectedDifficulty) === 50) {
+      setDifficultyTime(90);
+    }
+
     const abortController = new AbortController();
 
     const fetchGenerations = async () => {
@@ -160,7 +194,10 @@ function PokemonGrid() {
           console.log(error);
         });
     };
+
     fetchGenerations();
+
+    localStorage.setItem("score", JSON.stringify(highScore));
 
     return () => {
       abortController.abort();
@@ -170,14 +207,19 @@ function PokemonGrid() {
   return (
     <div className="select-none bg-gray-400">
       {/* GRID HEADER */}
+
       <Header
         highScore={highScore}
         pokemonClicked={pokemonClicked.length}
         pokemonList={pokemonList.length}
         generationList={generationList}
         handleGeneration={handleChangeGeneration}
+        handleGameState={handleGameState}
         handleDifficulty={handleChangeDifficulty}
+        reset={timerReset}
+        time={difficultyTime}
       />
+
       {/* POKEMON LIST */}
       <main className="min-h-screen lg:flex lg:justify-center lg:items-center">
         <div className="grid grid-cols-5 p-3 sm:grid-cols-8 lg:grid-cols-10 gap-3">
