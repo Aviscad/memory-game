@@ -111,7 +111,7 @@ function PokemonGrid() {
   const [selectedGeneration, setSelectedGeneration] = useState("i");
   const [pokemonList, setPokemonList] = useState([]);
   const [timerReset, settimerReset] = useState(true);
-  const [difficultyTime, setDifficultyTime] = useState(420);
+  const [difficultyTime, setDifficultyTime] = useState(240);
 
   const handlePokemonClicked = (pokemonId) => {
     if (pokemonClicked.indexOf(pokemonId) === -1) {
