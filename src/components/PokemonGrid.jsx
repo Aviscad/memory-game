@@ -187,7 +187,12 @@ function PokemonGrid() {
         .then((response) => response.json())
         .then((data) => {
           setgenerationList([
-            ...data.results.map((generation) => generation.name),
+            ...data
+              .results
+              .filter((generation, index) => {
+                if (index <= 7) return generation
+              })
+              .map((generation) => generation.name),
           ]);
         })
         .catch((error) => {
