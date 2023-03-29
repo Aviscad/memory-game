@@ -13,7 +13,7 @@ const EXTREME_LIST = 40;
 const IMPOSSIBLE_LIST = 50;
 
 /* DIFFICULTY NAMES */
-const difficultyOptions = ["Easy", "Medium", "Hard", "Extreme", " Impossible"];
+const difficultyOptions = ["Easy", "Medium", "Hard", "Extreme", "Impossible"];
 
 const getRandomInt = (min, max) => {
     min = Math.ceil(min);
@@ -133,7 +133,5 @@ const transformTime = (timeInSeconds) => {
 
     return `${min} : ${sec} ${min < 1 ? " s" : " m"}`;
 };
-
-/* testing */
 
 export { checkDifficulty, getRandomArray, shuffleArray, difficultyOptions, transformTime }
