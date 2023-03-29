@@ -15,14 +15,14 @@ const IMPOSSIBLE_LIST = 50;
 /* DIFFICULTY NAMES */
 const difficultyOptions = ["Easy", "Medium", "Hard", "Extreme", "Impossible"];
 
-const getRandomInt = (min, max) => {
+const getRandomInt = (min: number, max: number) => {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min);
 };
 
-const checkGeneration = (generation) => {
-    let arr;
+const checkGeneration = (generation: string) => {
+    let arr: number[];
     switch (generation) {
         case "i":
             arr = [1, 152];
@@ -55,7 +55,7 @@ const checkGeneration = (generation) => {
     return arr;
 };
 
-const checkDifficulty = (difficulty, time = false) => {
+const checkDifficulty = (difficulty: string, time: boolean = false): number => {
     let listSize, difficultyTimer;
     switch (difficulty) {
         case "EASY":
@@ -87,7 +87,7 @@ const checkDifficulty = (difficulty, time = false) => {
 };
 
 /* GET POKEMON NUMBERS */
-const getRandomArray = (selectedDifficulty, selectedGeneration) => {
+const getRandomArray = (selectedDifficulty: string, selectedGeneration: string) => {
     const pokemonIds = new Set();
 
     const pokemonNumberRange = checkGeneration(selectedGeneration);
@@ -107,7 +107,7 @@ const getRandomArray = (selectedDifficulty, selectedGeneration) => {
     return pokemonIds;
 };
 
-const shuffleArray = (array) => {
+const shuffleArray = (array: number[]) => {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
@@ -115,23 +115,28 @@ const shuffleArray = (array) => {
 };
 
 /* HANDLE TIME */
-const transformTime = (timeInSeconds) => {
+const transformTime = (timeInSeconds: number) => {
     let min = Math.floor(timeInSeconds / 60);
     let sec = timeInSeconds - min * 60;
+    let minHelper: string, secHelper: string;
 
     if (min < 10 && min > 0) {
-        min = "0" + min;
+        minHelper = "0" + String(min);
     } else if (min === 0) {
-        min = "00";
+        minHelper = "00";
+    } else {
+        minHelper = String(min)
     }
 
     if (sec < 10 && sec > 0) {
-        sec = "0" + sec;
+        secHelper = "0" + String(sec);
     } else if (sec === 0) {
-        sec = "00";
+        secHelper = "00";
+    } else {
+        secHelper = String(sec)
     }
 
-    return `${min} : ${sec} ${min < 1 ? " s" : " m"}`;
+    return `${minHelper} : ${secHelper} ${min < 1 ? " s" : " m"}`;
 };
 
 export { checkDifficulty, getRandomArray, shuffleArray, difficultyOptions, transformTime }

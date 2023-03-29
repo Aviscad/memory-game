@@ -10,7 +10,7 @@ const PokemonGrid = () => {
   const [highScore, sethighScore] = useState(
     localStorage.getItem("score") === null
       ? 0
-      : parseInt(localStorage.getItem("score"))
+      : Number(localStorage.getItem("score"))
   );
   const [message, setMessage] = useState("");
   const [gameOver, setGameOver] = useState(false);
@@ -26,7 +26,7 @@ const PokemonGrid = () => {
     setGameOver(true);
   }
 
-  const handlePokemonClicked = (pokemonId) => {
+  const handlePokemonClicked = (pokemonId: number) => {
     if (pokemonClicked.indexOf(pokemonId) === -1) {
       setMessage("");
       setPokemonClicked([...pokemonClicked, pokemonId]);
@@ -38,7 +38,7 @@ const PokemonGrid = () => {
     settimerReset(false);
   };
 
-  const handleGameState = (value) => {
+  const handleGameState = (value: boolean) => {
     setMessage("Your time is over, you lose!");
     setGameOver(value);
   };
@@ -47,7 +47,7 @@ const PokemonGrid = () => {
     sethighScore(
       highScore <= pokemonClicked.length
         ? pokemonClicked.length
-        : parseInt(localStorage.getItem("score"))
+        : Number(localStorage.getItem("score"))
     );
     localStorage.setItem("score", JSON.stringify(highScore));
     setGameOver(false);
