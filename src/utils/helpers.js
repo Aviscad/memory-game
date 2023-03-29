@@ -134,5 +134,6 @@ const transformTime = (timeInSeconds) => {
     return `${min} : ${sec} ${min < 1 ? " s" : " m"}`;
 };
 
+/* testing */
 
 export { checkDifficulty, getRandomArray, shuffleArray, difficultyOptions, transformTime }
