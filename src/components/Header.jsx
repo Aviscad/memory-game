@@ -1,25 +1,6 @@
 import { useEffect, useState } from "react";
+import { difficultyOptions, transformTime } from "../utils/helpers";
 import Select from "./Select";
-
-const difficultyOptions = ["Easy", "Medium", "Hard", "Extreme", "Hard Demon"];
-const transformTime = (timeInSeconds) => {
-  let min = Math.floor(timeInSeconds / 60);
-  let sec = timeInSeconds - min * 60;
-
-  if (min < 10 && min > 0) {
-    min = "0" + min;
-  } else if (min === 0) {
-    min = "00";
-  }
-
-  if (sec < 10 && sec > 0) {
-    sec = "0" + sec;
-  } else if (sec === 0) {
-    sec = "00";
-  }
-
-  return `${min} : ${sec} ${min < 1 ? " s" : " m"}`;
-};
 
 const Header = ({
   handleDifficulty,

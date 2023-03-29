@@ -3,101 +3,9 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Modal from "./Modal";
 import { useState, useEffect } from "react";
+import { checkDifficulty, getRandomArray, shuffleArray } from "../utils/helpers"
 
-const getRandomInt = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min);
-};
-
-const checkGeneration = (generation) => {
-  let arr;
-  switch (generation) {
-    case "i":
-      arr = [1, 152];
-      break;
-    case "ii":
-      arr = [152, 252];
-      break;
-    case "iii":
-      arr = [252, 387];
-      break;
-    case "iv":
-      arr = [387, 494];
-      break;
-    case "v":
-      arr = [494, 650];
-      break;
-    case "vi":
-      arr = [650, 722];
-      break;
-    case "vii":
-      arr = [722, 810];
-      break;
-    case "viii":
-      arr = [810, 905];
-      break;
-    default:
-      arr = [];
-      break;
-  }
-  return arr;
-};
-
-const checkDifficulty = (difficulty) => {
-  let listSize;
-  switch (difficulty) {
-    case "EASY":
-      listSize = 10;
-      break;
-    case "MEDIUM":
-      listSize = 20;
-      break;
-    case "HARD":
-      listSize = 30;
-      break;
-    case "EXTREME":
-      listSize = 40;
-      break;
-    case "HARD DEMON":
-      listSize = 50;
-      break;
-    default:
-      listSize = 0;
-      break;
-  }
-  return listSize;
-};
-
-//Get pokemon numbers
-const getRandomArray = (selectedDifficulty, selectedGeneration) => {
-  const pokemonIds = new Set();
-
-  const pokemonNumberRange = checkGeneration(selectedGeneration);
-  const gameDifficulty = checkDifficulty(selectedDifficulty);
-  const start = pokemonNumberRange[0];
-  const end = pokemonNumberRange[1];
-
-  for (let i = 0; i < gameDifficulty; i++) {
-    let n = getRandomInt(start, end);
-
-    while (pokemonIds.has(n)) {
-      n = getRandomInt(start, end);
-    }
-    pokemonIds.add(n);
-  }
-
-  return pokemonIds;
-};
-
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-};
-
-function PokemonGrid() {
+const PokemonGrid = () => {
   const [pokemonClicked, setPokemonClicked] = useState([]);
   const [highScore, sethighScore] = useState(
     localStorage.getItem("score") === null
@@ -113,22 +21,20 @@ function PokemonGrid() {
   const [timerReset, settimerReset] = useState(true);
   const [difficultyTime, setDifficultyTime] = useState(240);
 
+  if (pokemonList.length === pokemonClicked.length && pokemonList.length != 0 && !gameOver) {
+    setMessage("Congratulations, You Won!");
+    setGameOver(true);
+  }
+
   const handlePokemonClicked = (pokemonId) => {
     if (pokemonClicked.indexOf(pokemonId) === -1) {
       setMessage("");
-      pokemonClicked.push(pokemonId);
-      setPokemonClicked([...pokemonClicked]);
+      setPokemonClicked([...pokemonClicked, pokemonId]);
       shuffleArray(pokemonList);
     } else {
       setMessage("You already clicked this pokemon, you lose!");
       setGameOver(true);
     }
-
-    if (pokemonList.length === pokemonClicked.length) {
-      setMessage("Congratulations, You Won!");
-      setGameOver(true);
-    }
-
     settimerReset(false);
   };
 
@@ -138,7 +44,6 @@ function PokemonGrid() {
   };
 
   const resetGame = () => {
-    console.log(checkDifficulty);
     sethighScore(
       highScore <= pokemonClicked.length
         ? pokemonClicked.length
@@ -166,17 +71,7 @@ function PokemonGrid() {
   useEffect(() => {
     setPokemonList([...getRandomArray(selectedDifficulty, selectedGeneration)]);
 
-    if (checkDifficulty(selectedDifficulty) === 10) {
-      setDifficultyTime(240);
-    } else if (checkDifficulty(selectedDifficulty) === 20) {
-      setDifficultyTime(210);
-    } else if (checkDifficulty(selectedDifficulty) === 30) {
-      setDifficultyTime(180);
-    } else if (checkDifficulty(selectedDifficulty) === 40) {
-      setDifficultyTime(150);
-    } else if (checkDifficulty(selectedDifficulty) === 50) {
-      setDifficultyTime(90);
-    }
+    setDifficultyTime(checkDifficulty(selectedDifficulty, true))
 
     const abortController = new AbortController();
 
@@ -196,7 +91,9 @@ function PokemonGrid() {
           ]);
         })
         .catch((error) => {
-          console.log(error);
+          if (error.name !== "AbortError") {
+            console.log(error)
+          }
         });
     };
 
