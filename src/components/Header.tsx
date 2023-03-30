@@ -25,14 +25,14 @@ const Header = ({
   highScore,
   pokemonList,
 }: HeaderProps) => {
-  const [t, sett] = useState(time);
+  const [timer, setTimer] = useState(time);
 
   const handleInterval = () => {
-    if (t === 0) {
+    if (timer === 0) {
       handleGameState(true);
-      sett(time);
+      setTimer(time);
     } else {
-      sett(t - 1);
+      setTimer(prevTimer => prevTimer - 1);
     }
   };
 
@@ -40,13 +40,13 @@ const Header = ({
     let myTimer = setInterval(handleInterval, 1000);
     if (reset) {
       clearInterval(myTimer);
-      sett(time);
+      setTimer(time);
       myTimer = setInterval(handleInterval, 1000);
     }
     return () => {
       clearInterval(myTimer);
     };
-  }, [t]);
+  }, [timer]);
 
   return (
     <header className="flex flex-col gap-3 p-3 justify-center items-center  sm:flex-row sm:justify-around bg-gray-800 text-white">
@@ -72,7 +72,7 @@ const Header = ({
       </div>
       <p className="fixed top-1.5 left-1.5 py-3 px-5 bg-gray-800 z-10 rounded-3xl text-xs sm:top-14 lg:top-1.5">
         <span className="text-red-500 animate-pulse font-bold">
-          {transformTime(t)}
+          {transformTime(timer)}
         </span>
       </p>
     </header>
