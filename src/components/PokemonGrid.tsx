@@ -115,7 +115,7 @@ const PokemonGrid = () => {
   }, [selectedGeneration, selectedDifficulty, highScore]);
 
   return (
-    <div className="select-none bg-gray-400">
+    <div className="select-none bg-gray-400 flex flex-col min-h-screen justify-between">
       {/* GRID HEADER */}
 
       <Header
@@ -131,7 +131,7 @@ const PokemonGrid = () => {
       />
 
       {/* POKEMON LIST */}
-      <main className="min-h-screen lg:flex lg:justify-center lg:items-center">
+      <main className="lg:flex lg:justify-center lg:items-center">
         <div className="grid grid-cols-5 p-3 gap-3">
           {pokemonList.map((pokemonNumber) => (
             <PokemonCard

@@ -70,7 +70,7 @@ const Header = ({
           handleChange={handleGeneration}
         />
       </div>
-      <p className="fixed top-1.5 left-1.5 py-3 px-5 bg-gray-800 z-10 rounded-3xl text-xs">
+      <p className="fixed top-1.5 left-1.5 py-3 px-5 bg-gray-800 z-10 rounded-3xl text-xs sm:top-14 lg:top-1.5">
         <span className="text-red-500 animate-pulse font-bold">
           {transformTime(t)}
         </span>
