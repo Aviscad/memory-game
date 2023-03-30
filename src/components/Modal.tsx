@@ -1,4 +1,11 @@
-function Modal({ message, handleResetClick }) {
+import { MouseEventHandler } from "react";
+
+type ModalProps = {
+  message: string,
+  handleResetClick: MouseEventHandler<HTMLButtonElement>
+}
+
+function Modal({ message, handleResetClick }: ModalProps) {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 w-screen h-screen bg-black bg-opacity-60 flex justify-center items-center">
       <div className="h-auto max-w-md md:h-auto ">

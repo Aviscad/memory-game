@@ -1,6 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEventHandler } from "react";
 import { difficultyOptions, transformTime } from "../utils/helpers";
 import Select from "./Select";
+
+type HeaderProps = {
+  handleDifficulty: ChangeEventHandler<HTMLSelectElement>,
+  handleGeneration: ChangeEventHandler<HTMLSelectElement>,
+  generationList: string[],
+  pokemonClicked: number,
+  handleGameState: Function,
+  time: number,
+  reset: boolean,
+  highScore: number,
+  pokemonList: number,
+}
 
 const Header = ({
   handleDifficulty,
@@ -12,7 +24,7 @@ const Header = ({
   reset,
   highScore,
   pokemonList,
-}) => {
+}: HeaderProps) => {
   const [t, sett] = useState(time);
 
   const handleInterval = () => {

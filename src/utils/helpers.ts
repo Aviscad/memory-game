@@ -88,7 +88,7 @@ const checkDifficulty = (difficulty: string, time: boolean = false): number => {
 
 /* GET POKEMON NUMBERS */
 const getRandomArray = (selectedDifficulty: string, selectedGeneration: string) => {
-    const pokemonIds = new Set();
+    const pokemonIds = new Set<number>();
 
     const pokemonNumberRange = checkGeneration(selectedGeneration);
     const gameDifficulty = checkDifficulty(selectedDifficulty);
@@ -121,7 +121,7 @@ const transformTime = (timeInSeconds: number) => {
     let minHelper: string, secHelper: string;
 
     if (min < 10 && min > 0) {
-        minHelper = "0" + String(min);
+        minHelper = "0" + (min);
     } else if (min === 0) {
         minHelper = "00";
     } else {
@@ -129,7 +129,7 @@ const transformTime = (timeInSeconds: number) => {
     }
 
     if (sec < 10 && sec > 0) {
-        secHelper = "0" + String(sec);
+        secHelper = "0" + (sec);
     } else if (sec === 0) {
         secHelper = "00";
     } else {

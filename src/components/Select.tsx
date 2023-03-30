@@ -1,4 +1,12 @@
-const Select = ({ label, options, handleChange }) => {
+import { ChangeEvent } from "react";
+
+type SelectProps = {
+  label: string,
+  options: string[],
+  handleChange: (e: ChangeEvent<HTMLSelectElement>) => void
+}
+
+const Select = ({ label, options, handleChange }: SelectProps) => {
   return (
     <>
       <label htmlFor="select">{label}</label>

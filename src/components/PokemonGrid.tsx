@@ -2,11 +2,11 @@ import PokemonCard from "./PokemonCard";
 import Header from "./Header";
 import Footer from "./Footer";
 import Modal from "./Modal";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { checkDifficulty, getRandomArray, shuffleArray } from "../utils/helpers"
 
 const PokemonGrid = () => {
-  const [pokemonClicked, setPokemonClicked] = useState([]);
+  const [pokemonClicked, setPokemonClicked] = useState<number[]>([]);
   const [highScore, sethighScore] = useState(
     localStorage.getItem("score") === null
       ? 0
@@ -15,9 +15,9 @@ const PokemonGrid = () => {
   const [message, setMessage] = useState("");
   const [gameOver, setGameOver] = useState(false);
   const [selectedDifficulty, setselectedDifficulty] = useState("EASY");
-  const [generationList, setgenerationList] = useState([]);
+  const [generationList, setgenerationList] = useState<string[]>([]);
   const [selectedGeneration, setSelectedGeneration] = useState("i");
-  const [pokemonList, setPokemonList] = useState([]);
+  const [pokemonList, setPokemonList] = useState<number[]>([]);
   const [timerReset, settimerReset] = useState(true);
   const [difficultyTime, setDifficultyTime] = useState(240);
 
@@ -26,7 +26,7 @@ const PokemonGrid = () => {
     setGameOver(true);
   }
 
-  const handlePokemonClicked = (pokemonId: number) => {
+  const handlePokemonClicked = (pokemonId: number): void => {
     if (pokemonClicked.indexOf(pokemonId) === -1) {
       setMessage("");
       setPokemonClicked([...pokemonClicked, pokemonId]);
@@ -38,7 +38,7 @@ const PokemonGrid = () => {
     settimerReset(false);
   };
 
-  const handleGameState = (value: boolean) => {
+  const handleGameState = (value: boolean): void => {
     setMessage("Your time is over, you lose!");
     setGameOver(value);
   };
@@ -57,14 +57,15 @@ const PokemonGrid = () => {
     settimerReset(true);
   };
 
-  const handleChangeDifficulty = (e) => {
-    setselectedDifficulty(e.target.value.toUpperCase());
+  const handleChangeDifficulty = (e: ChangeEvent<HTMLSelectElement>) => {
+    let difficulty = e.target as HTMLSelectElement;
+    setselectedDifficulty(difficulty.value.toUpperCase());
     resetGame();
   };
 
-  const handleChangeGeneration = (e) => {
-    let generation = e.target.value.split("-").pop();
-    setSelectedGeneration(generation);
+  const handleChangeGeneration = (e: ChangeEvent<HTMLSelectElement>) => {
+    let generation = e.target as HTMLSelectElement;
+    setSelectedGeneration(String(generation.value.split("-").pop()));
     resetGame();
   };
 
@@ -75,6 +76,11 @@ const PokemonGrid = () => {
 
     const abortController = new AbortController();
 
+    type generationType = {
+      name: string,
+      url: string
+    }
+
     const fetchGenerations = async () => {
       await fetch("https://pokeapi.co/api/v2/generation", {
         signal: abortController.signal,
@@ -84,10 +90,12 @@ const PokemonGrid = () => {
           setgenerationList([
             ...data
               .results
-              .filter((generation, index) => {
+              .filter((generation: object, index: number) => {
                 if (index <= 7) return generation
               })
-              .map((generation) => generation.name),
+              .map((generation: generationType): string => {
+                return generation.name
+              }),
           ]);
         })
         .catch((error) => {
@@ -129,7 +137,7 @@ const PokemonGrid = () => {
             <PokemonCard
               number={pokemonNumber}
               key={pokemonNumber}
-              handlePokemonClick={!gameOver ? handlePokemonClicked : null}
+              handlePokemonClick={!gameOver && handlePokemonClicked}
             />
           ))}
         </div>

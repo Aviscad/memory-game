@@ -1,7 +1,17 @@
 import { useEffect, useState } from "react";
 
-function PokemonCard({ number, handlePokemonClick }) {
-  const [pokemonInfo, setPokemonInfo] = useState();
+type PokemonCardProps = {
+  number: number,
+  handlePokemonClick: false | ((pokemonId: number) => void)
+}
+
+type PokemonInfo = {
+  name: string,
+  url: string,
+}
+
+function PokemonCard({ number, handlePokemonClick }: PokemonCardProps) {
+  const [pokemonInfo, setPokemonInfo] = useState<PokemonInfo>();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -12,7 +22,18 @@ function PokemonCard({ number, handlePokemonClick }) {
       })
         .then((response) => response.json())
         .then((data) => {
-          setPokemonInfo(data);
+          let info: PokemonInfo = { name: "", url: "" };
+
+          info.name = data.name;
+          if (data.sprites.other.dream_world.front_default) {
+            info.url = data.sprites.other.dream_world.front_default;
+          } else if (data.sprites.other.home.front_default) {
+            info.url = data.sprites.other.home.front_default
+          } else {
+            info.url = data.sprites.other["official-artwork"].front_default
+          }
+
+          setPokemonInfo(info);
         })
         .catch((error) => {
           if (error.name !== "AbortError") {
@@ -31,18 +52,14 @@ function PokemonCard({ number, handlePokemonClick }) {
     {pokemonInfo && <figure
       className="shadow-md cursor-pointer rounded-md bg-white p-1 flex flex-col justify-center items-center max-w-20 max-h-40 hover:shadow hover:shadow-black hover:scale-105"
       onClick={() => {
-        if (handlePokemonClick != null) {
+        if (handlePokemonClick != false) {
           handlePokemonClick(number);
         }
       }}
     >
       <img
         className="w-10 h-10 sm:w-16 sm:h-16 md:w-28 md:h-28 xl:w-32 xl:h-32"
-        src={
-          pokemonInfo.sprites.other.dream_world.front_default ||
-          pokemonInfo.sprites.other.home.front_default ||
-          pokemonInfo.sprites.other["official-artwork"]?.front_default
-        }
+        src={pokemonInfo.url}
       />
       <figcaption className="text-center capitalize text-sm sm:text-base xl:text-lg">
         <small>
