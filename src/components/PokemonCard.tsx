@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 type PokemonCardProps = {
   number: number,
@@ -57,10 +58,9 @@ function PokemonCard({ number, handlePokemonClick }: PokemonCardProps) {
         }
       }}
     >
-      <img
-        className="w-10 h-10 sm:w-16 sm:h-16 md:w-28 md:h-28 xl:w-32 xl:h-32"
-        src={pokemonInfo.url}
-      />
+      <LazyLoadImage className="w-10 h-10 sm:w-16 sm:h-16 md:w-28 md:h-28 xl:w-32 xl:h-32"
+        alt="Dynamically generated Pokémon image of the Selected Generation"
+        src={pokemonInfo.url} />
       <figcaption className="text-center capitalize text-sm sm:text-base xl:text-lg">
         <small>
           <i>{pokemonInfo.name}</i>
