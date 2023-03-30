@@ -1,16 +1,16 @@
 /* DEFAULT DIFFICULTY TIMERS */
-const EASY_TIMER = 240;
-const MEDIUM_TIMER = 210;
-const HARD_TIMER = 180;
-const EXTREME_TIMER = 150;
-const IMPOSSIBLE_TIMER = 90;
+const EASY_TIMER = 180;
+const MEDIUM_TIMER = 150;
+const HARD_TIMER = 120;
+const EXTREME_TIMER = 90;
+const IMPOSSIBLE_TIMER = 60;
 
 /* DEFAULT DIFFICULTY LIST */
 const EASY_LIST = 10;
-const MEDIUM_LIST = 20;
-const HARD_LIST = 30;
-const EXTREME_LIST = 40;
-const IMPOSSIBLE_LIST = 50;
+const MEDIUM_LIST = 15;
+const HARD_LIST = 20;
+const EXTREME_LIST = 25;
+const IMPOSSIBLE_LIST = 30;
 
 /* DIFFICULTY NAMES */
 const difficultyOptions = ["Easy", "Medium", "Hard", "Extreme", "Impossible"];
@@ -49,7 +49,7 @@ const checkGeneration = (generation: string) => {
             arr = [810, 905];
             break;
         default:
-            arr = [];
+            arr = [1, 152];
             break;
     }
     return arr;

@@ -5,6 +5,11 @@ import Modal from "./Modal";
 import { useState, useEffect, ChangeEvent } from "react";
 import { checkDifficulty, getRandomArray, shuffleArray } from "../utils/helpers"
 
+type generationType = {
+  name: string,
+  url: string
+}
+
 const PokemonGrid = () => {
   const [pokemonClicked, setPokemonClicked] = useState<number[]>([]);
   const [highScore, sethighScore] = useState(
@@ -76,11 +81,6 @@ const PokemonGrid = () => {
 
     const abortController = new AbortController();
 
-    type generationType = {
-      name: string,
-      url: string
-    }
-
     const fetchGenerations = async () => {
       await fetch("https://pokeapi.co/api/v2/generation", {
         signal: abortController.signal,
@@ -132,7 +132,7 @@ const PokemonGrid = () => {
 
       {/* POKEMON LIST */}
       <main className="min-h-screen lg:flex lg:justify-center lg:items-center">
-        <div className="grid grid-cols-5 p-3 sm:grid-cols-8 lg:grid-cols-10 gap-3">
+        <div className="grid grid-cols-5 p-3 gap-3">
           {pokemonList.map((pokemonNumber) => (
             <PokemonCard
               number={pokemonNumber}
