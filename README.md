@@ -4,7 +4,14 @@ The game starts with all the pokémon cards and the player must try to click one
 
 ## [Live Demo](https://aviscad.github.io/memory-game/)
 
+<img src="https://raw.githubusercontent.com/Aviscad/memory-game/master/showcase/desktop.png">
+
+| Mobile                                                                                                     | Medium                                                                                       |
+| ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| <img src="https://raw.githubusercontent.com/Aviscad/memory-game/master/showcase/mobile.png" width="300px"> | <img src="https://raw.githubusercontent.com/Aviscad/memory-game/master/showcase/tablet.png"> |
+
 Technologies & Tools used:
+
 1. [Typescript.](https://www.typescriptlang.org/)
 2. [React.](https://react.dev/)
 3. [Tailwind CSS.](https://tailwindcss.com/)
@@ -15,18 +22,25 @@ Technologies & Tools used:
 ## Installation
 
 ### Project Setup
+
 ```
 npm install
 ```
+
 ### Compiles and hot-reloads for development
+
 ```
 npm run dev
 ```
+
 ### Compile for production
+
 ```
 npm run build
 ```
+
 ### Preview production
+
 ```
 npm run preview
 ```
