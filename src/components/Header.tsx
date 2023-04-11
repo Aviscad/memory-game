@@ -1,13 +1,14 @@
-import { useEffect, useState, ChangeEventHandler } from "react";
+import {  ChangeEventHandler } from "react";
 import { difficultyOptions, transformTime } from "../utils/helpers";
 import Select from "./Select";
+import useGameTimer from "../hook/useGameTimer";
 
 type HeaderProps = {
   handleDifficulty: ChangeEventHandler<HTMLSelectElement>,
   handleGeneration: ChangeEventHandler<HTMLSelectElement>,
   generationList: string[],
   pokemonClicked: number,
-  handleGameState: Function,
+  handleGameState: (val: boolean) => void,
   time: number,
   reset: boolean,
   highScore: number,
@@ -25,28 +26,7 @@ const Header = ({
   highScore,
   pokemonList,
 }: HeaderProps) => {
-  const [timer, setTimer] = useState(time);
-
-  const handleInterval = () => {
-    if (timer === 0) {
-      handleGameState(true);
-      setTimer(time);
-    } else {
-      setTimer(prevTimer => prevTimer - 1);
-    }
-  };
-
-  useEffect(() => {
-    let myTimer = setInterval(handleInterval, 1000);
-    if (reset) {
-      clearInterval(myTimer);
-      setTimer(time);
-      myTimer = setInterval(handleInterval, 1000);
-    }
-    return () => {
-      clearInterval(myTimer);
-    };
-  }, [timer]);
+  const timer = useGameTimer(time, handleGameState, reset);
 
   return (
     <header className="flex flex-col gap-3 p-3 justify-center items-center  sm:flex-row sm:justify-around bg-gray-800 text-white">
